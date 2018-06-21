@@ -1,0 +1,179 @@
+---
+title: "National Grid"
+authors: Ariana Gerdis, Michael Panicci
+runtime: shiny
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    social: menu
+    source_code: embed
+    vertical_layout: scroll
+    output_dir: "."
+---
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(ggplot2)
+library(plotly)
+library(profvis)
+library(rJava)
+library(xlsxjars)
+library(RODBC)
+library(readxl)
+library(timeDate)
+library(xlsx)
+library(writexl)
+```
+Gas Overview
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+### Future Gas Forward Basis. Use the 'hover' feature and the legend to easily compare data.
+```{r,include=FALSE}
+source('Z:\\IT\\Summer Intern 2018 Projects\\R Project\\RScripts\\Gas\\GasForwardBasis.R', echo=TRUE)
+
+for_gas_graph <- forward_gas
+
+```
+```{r}
+ggplotly(for_gas_graph)
+```
+
+
+Row
+-----------------------------------------------------------------------
+
+### Mandatory, Discretionary, & Accelerated
+```{r,include=FALSE}
+source('//nyhcbdrs06v/shared/Regulated Electric Load/NYCommodity/Pricing/Summer Intern 2017 Projects/R-Project/RScripts/MD.R', echo=TRUE)
+
+MDPlot <- p
+```
+```{r}
+ggplotly(MDPlot) 
+```
+
+### Henry Gas Futures
+```{r,include=FALSE}
+source('Z:\\IT\\Summer Intern 2018 Projects\\R Project\\RScripts\\Previous Interns\\FuturesGas.R', echo=TRUE)
+
+FutGas <- sp
+```
+```{r}
+ggplotly(FutGas)
+```
+
+
+Row
+-----------------------------------------------------------------------
+### Gas Volatility Contour Henry
+```{r,include=FALSE}
+source('//nyhcbdrs06v/shared/Regulated Electric Load/NYCommodity/Pricing/Summer Intern 2017 Projects/R-Project/RScripts/VolatilityGas.R', echo=TRUE)
+
+volGasContour <- volContour
+volGasMesh <- volMesh
+```
+```{r}
+ggplotly(volGasContour)
+```
+
+### Gas Volatility Mesh Henry
+```{r}
+ggplotly(volGasMesh)
+```
+
+Electric Overview
+=======================================================================
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+### Zone A Power Futures
+```{r,include=FALSE}
+source('Z:\\IT\\Summer Intern 2017 Projects\\R-Project\\RScripts\\FuturesPwr.R', echo=TRUE)
+
+FutPwrA <- sp
+```
+```{r}
+ggplotly(FutPwrA)
+```
+
+### Zone F Power Futures 
+```{r,include=FALSE}
+source('Z:\\IT\\Summer Intern 2017 Projects\\R-Project\\RScripts\\FuturesPwrF.R', echo=TRUE)
+FutPwrF <- sp
+```
+```{r}
+ggplotly(FutPwrF)
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Power Volatility Contour PJM
+```{r,include=FALSE}
+source('//nyhcbdrs06v/shared/Regulated Electric Load/NYCommodity/Pricing/Summer Intern 2017 Projects/R-Project/RScripts/VolatilityPwr.R', echo=TRUE)
+
+VolPwrContour <- volContour
+volPwrMesh <- volMesh
+```
+```{r}
+ggplotly(VolPwrContour)
+```
+
+### Power Volatility Mesh PJM
+```{r}
+ggplotly(volPwrMesh)
+```
+
+
+
+Row {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Zone A Commodity Load With Hedge Power (Most Current via 'melpiweb' Database)
+```{r,include=FALSE}
+source('Z:\\IT\\Summer Intern 2018 Projects\\R Project\\RScripts\\LoadMainA.R', echo=TRUE)
+
+
+HedgeCommodityPlotImage <- HedgeCommodityPlot
+```
+```{r}
+ggplotly(HedgeCommodityPlotImage)
+```
+
+### Zone F Commodity Load With Hedge Power (Most Current via 'melpiweb' Database)
+```{r,include=FALSE}
+source('Z:\\IT\\Summer Intern 2018 Projects\\R Project\\RScripts\\LoadMainF.R', echo=TRUE)
+
+
+HedgeCommodityPlotImagey <- HedgeCommodityPloty
+```
+```{r}
+ggplotly(HedgeCommodityPlotImagey)
+```
+
+
+Gas Hedging
+=======================================================================
+
+Inputs {.sidebar}
+-------------------------------------
+
+```{r}
+# shiny inputs defined here
+```
+ 
+Column
+-------------------------------------
+    
+### Chart 1
+    
+```{r}
+```
+    
+### Chart 2
+
+```{r}
+```
+
+odbcCloseAll()
